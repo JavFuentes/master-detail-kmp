@@ -43,6 +43,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
         }
     }
+
+    task("testClasses")
 }
 
 android {
