@@ -19,6 +19,6 @@ fun App() {
             .build()
     }
 
-    HomeScreen()
+    DetailScreen()
 }
 
