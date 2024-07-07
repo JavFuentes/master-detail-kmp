@@ -24,15 +24,14 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen() {
-    val movie = movies[0]
+fun DetailScreen(movie: Movie, onBack: () -> Unit) {
     Screen {
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text(movie.title) },
                     navigationIcon = {
-                        IconButton(onClick = {/*TODO*/}){
+                        IconButton(onClick = onBack){
                             Icon(
                                 imageVector = Icons.AutoMirrored.Default.ArrowBack,
                                 contentDescription = stringResource(Res.string.back)
