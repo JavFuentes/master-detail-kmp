@@ -45,6 +45,8 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
             implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.contentnegotiation)
+            implementation(libs.ktor.serialization.json)
             implementation(libs.androidx.navigation.compose)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
         }
