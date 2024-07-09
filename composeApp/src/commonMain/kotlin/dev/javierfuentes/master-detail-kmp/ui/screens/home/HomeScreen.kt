@@ -34,7 +34,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun HomeScreen(
         onMovieClick: (Movie) -> Unit,
-        vm: HomeViewModel = viewModel { HomeViewModel() }
+        vm: HomeViewModel
         ) {
     Screen {
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()

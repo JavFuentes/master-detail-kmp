@@ -1,13 +1,15 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import dev.javierfuentes.`master-detail-kmp`.data.MoviesService
 
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val moviesService: MoviesService
+) : ViewModel() {
 
     var state by mutableStateOf(UiState())
         private set
@@ -15,8 +17,10 @@ class HomeViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             state = UiState(loading = true)
-            delay(1000)
-            state = UiState(loading = false, movies =  movies)
+            state = UiState(
+                loading = false,
+                movies = moviesService.fetchPopularMovies().results.map { it.toDomainMovie() }
+            )
         }
     }
 
@@ -25,3 +29,9 @@ class HomeViewModel : ViewModel() {
         val movies: List<Movie> = emptyList()
     )
 }
+
+private fun RemoteMovie.toDomainMovie() = Movie(
+    id = id,
+    title = title,
+    poster = "https://image.tmdb.org/t/p/w500$posterPath"
+)
