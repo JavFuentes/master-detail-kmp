@@ -15,7 +15,6 @@ import master_detail_kmp.composeapp.generated.resources.Res
 import master_detail_kmp.composeapp.generated.resources.api_key
 import org.jetbrains.compose.resources.stringResource
 
-
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
@@ -30,7 +29,7 @@ fun Navigation() {
     }
     val apiKey = stringResource(Res.string.api_key)
     val viewModel = viewModel{
-        HomeViewModel(MoviesService(apiKey,client))
+        HomeViewModel(MoviesRepository(MoviesService(apiKey,client)))
     }
 
     NavHost(navController = navController, startDestination = "home") {

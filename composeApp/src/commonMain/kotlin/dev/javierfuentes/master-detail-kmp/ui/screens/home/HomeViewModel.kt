@@ -8,7 +8,7 @@ import dev.javierfuentes.`master-detail-kmp`.data.MoviesService
 
 
 class HomeViewModel(
-    private val moviesService: MoviesService
+    private val repository: MoviesRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(UiState())
@@ -19,7 +19,7 @@ class HomeViewModel(
             state = UiState(loading = true)
             state = UiState(
                 loading = false,
-                movies = moviesService.fetchPopularMovies().results.map { it.toDomainMovie() }
+                movies = repository.fetchPopularMovies().results.map { it.toDomainMovie() }
             )
         }
     }
