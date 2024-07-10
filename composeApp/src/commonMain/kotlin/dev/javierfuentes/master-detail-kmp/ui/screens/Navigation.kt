@@ -8,7 +8,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dev.javierfuentes.`master-detail-kmp`.data.MoviesService
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.http.URLProtocol
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import master_detail_kmp.composeapp.generated.resources.Res
@@ -18,19 +20,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
-    val client = remember {
-        HttpClient{
-            install(ContentNegotiation) {
-                json(Json{
-                    ignoreUnknownKeys = true
-                })
-            }
-        }
-    }
-    val apiKey = stringResource(Res.string.api_key)
-    val viewModel = viewModel{
-        HomeViewModel(MoviesRepository(MoviesService(apiKey,client)))
-    }
+    val repository = rememberMoviesRepository()
 
     NavHost(navController = navController, startDestination = "home") {
         composable("home"){
@@ -38,7 +28,7 @@ fun Navigation() {
                 onMovieClick = { movie ->
                     navController.navigate("details/${movie.id}")
                 },
-                vm = viewModel
+                vm =  viewModel{ HomeViewModel(repository) }
             )
         }
 
@@ -46,12 +36,33 @@ fun Navigation() {
             route = "details/{movieId}",
             arguments = listOf(navArgument("movieId") { type = NavType.IntType })
         ){ backStackEntry ->
-            val movieId = backStackEntry.arguments?.getInt("movieId")
+            val movieId = checkNotNull(backStackEntry.arguments?.getInt("movieId"))
             DetailScreen(
-                movie = movies.first { it.id == movieId },
+                vm = viewModel { DetailViewModel(movieId, repository) },
                 onBack = { navController.popBackStack() }
             )
         }
     }
+}
+
+@Composable
+private fun rememberMoviesRepository(
+    apiKey: String = stringResource(Res.string.api_key)
+): MoviesRepository = remember{
+    val client = HttpClient {
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
+            }
+            install(DefaultRequest) {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = "api.themoviedb.org/3"
+                    parameters.append("api_key", apiKey)
+                }
+            }
+        }
+    MoviesRepository(MoviesService(client))
 }
 

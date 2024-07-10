@@ -19,7 +19,7 @@ class HomeViewModel(
             state = UiState(loading = true)
             state = UiState(
                 loading = false,
-                movies = repository.fetchPopularMovies().results.map { it.toDomainMovie() }
+                movies = repository.fetchPopularMovies()
             )
         }
     }
@@ -30,8 +30,3 @@ class HomeViewModel(
     )
 }
 
-private fun RemoteMovie.toDomainMovie() = Movie(
-    id = id,
-    title = title,
-    poster = "https://image.tmdb.org/t/p/w500$posterPath"
-)

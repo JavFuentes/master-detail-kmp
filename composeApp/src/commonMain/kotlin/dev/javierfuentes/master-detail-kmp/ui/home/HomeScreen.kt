@@ -49,14 +49,8 @@ fun HomeScreen(
 
         ) { padding ->
             val state = vm.state
-            if(state.loading) {
-                Box(
-                    modifier = Modifier.fillMaxSize().padding(padding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
+            LoadingIndicator(enabled = state.loading)
+
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(120.dp),
                 contentPadding = PaddingValues(4.dp),

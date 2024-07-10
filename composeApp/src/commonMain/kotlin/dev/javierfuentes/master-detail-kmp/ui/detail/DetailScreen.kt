@@ -24,12 +24,14 @@ import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(movie: Movie, onBack: () -> Unit) {
+fun DetailScreen(vm: DetailViewModel, onBack: () -> Unit) {
+    val state = vm.state
+
     Screen {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(movie.title) },
+                    title = { Text(state.movie?.title ?: "") },
                     navigationIcon = {
                         IconButton(onClick = onBack){
                             Icon(
@@ -41,25 +43,29 @@ fun DetailScreen(movie: Movie, onBack: () -> Unit) {
                 )
             }
         ) { padding ->
-            Column(
-                modifier = Modifier
-                    .padding(padding)
-                    .verticalScroll(rememberScrollState())
+            LoadingIndicator(enabled = state.loading)
 
-            ) {
-                AsyncImage(
-                    model = movie.poster,
-                    contentDescription = movie.title,
-                    contentScale = ContentScale.Crop,
+            state.movie?.let {  movie ->
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(16f/9f)
-                )
-                Text(
-                    text = movie.title,
-                    modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.headlineMedium
-                )
+                        .padding(padding)
+                        .verticalScroll(rememberScrollState())
+
+                ) {
+                    AsyncImage(
+                        model = movie.poster,
+                        contentDescription = movie.title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(16f/9f)
+                    )
+                    Text(
+                        text = movie.title,
+                        modifier = Modifier.padding(16.dp),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                }
             }
         }
     }
