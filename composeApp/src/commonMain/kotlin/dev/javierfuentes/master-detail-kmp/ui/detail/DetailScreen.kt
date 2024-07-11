@@ -32,6 +32,11 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import master_detail_kmp.composeapp.generated.resources.Res
 import master_detail_kmp.composeapp.generated.resources.back
+import master_detail_kmp.composeapp.generated.resources.original_language
+import master_detail_kmp.composeapp.generated.resources.original_title
+import master_detail_kmp.composeapp.generated.resources.popularity
+import master_detail_kmp.composeapp.generated.resources.release_date
+import master_detail_kmp.composeapp.generated.resources.vote_average
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,11 +112,11 @@ private fun MovieDetail(
         )
         Text(
             text = buildAnnotatedString {
-                property("Original language", movie.originalLanguage)
-                property("Original title", movie.originalTitle)
-                property("Release date", movie.releaseDate)
-                property("Popularity", movie.popularity.toString())
-                property("Vote average", movie.voteAverage.toString(), end = true)
+                property(stringResource(Res.string.original_language), movie.originalLanguage)
+                property(stringResource(Res.string.original_title), movie.originalTitle)
+                property(stringResource(Res.string.release_date), movie.releaseDate)
+                property(stringResource(Res.string.popularity), movie.popularity.toString())
+                property(stringResource(Res.string.vote_average), movie.voteAverage.toString(), end = true)
             },
             modifier = Modifier
                 .fillMaxWidth()
