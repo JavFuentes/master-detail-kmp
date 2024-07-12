@@ -60,7 +60,7 @@ kotlin {
     }
 
     sourceSets.commonMain {
-        kotlin.srcDirs("build/generated/ksp/metadata")
+        kotlin.srcDir("build/generated/ksp/metadata")
     }
 
     task("testClasses")

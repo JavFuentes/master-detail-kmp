@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.javierfuentes.`master-detail-kmp`.data.MoviesService
 
-
 class HomeViewModel(
     private val repository: MoviesRepository
 ) : ViewModel() {
@@ -17,10 +16,11 @@ class HomeViewModel(
     init {
         viewModelScope.launch {
             state = UiState(loading = true)
-            state = UiState(
-                loading = false,
-                movies = repository.fetchPopularMovies()
-            )
+            repository.movies.collect{
+                if(it.isNotEmpty()) {
+                    state = UiState(loading = false, movies = it)
+                }
+            }
         }
     }
 
