@@ -9,7 +9,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 @Preview
-fun App() {
+fun App(moviesDao: MoviesDao) {
     setSingletonImageLoaderFactory { context ->
         ImageLoader.Builder(context)
             .crossfade(true)
@@ -17,6 +17,6 @@ fun App() {
             .build()
     }
 
-    Navigation()
+    Navigation(moviesDao)
 }
 
