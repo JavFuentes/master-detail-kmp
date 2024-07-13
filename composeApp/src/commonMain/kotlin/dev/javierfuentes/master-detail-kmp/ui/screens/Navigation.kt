@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dev.javierfuentes.`master-detail-kmp`.data.MoviesService
+import dev.javierfuentes.masterdetailkmp.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -46,10 +47,7 @@ fun Navigation(moviesDao: MoviesDao) {
 }
 
 @Composable
-private fun rememberMoviesRepository(
-    moviesDao: MoviesDao,
-    apiKey: String = stringResource(Res.string.api_key)
-): MoviesRepository = remember{
+private fun rememberMoviesRepository(moviesDao: MoviesDao): MoviesRepository = remember{
     val client = HttpClient {
             install(ContentNegotiation) {
                 json(Json {
@@ -60,7 +58,7 @@ private fun rememberMoviesRepository(
                 url {
                     protocol = URLProtocol.HTTPS
                     host = "api.themoviedb.org"
-                    parameters.append("api_key", apiKey)
+                    parameters.append("api_key", BuildConfig.API_KEY)
                 }
             }
         }
